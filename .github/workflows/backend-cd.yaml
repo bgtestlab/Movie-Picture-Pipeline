@@ -99,12 +99,12 @@ jobs:
         - name: Build, tag, and push docker image to Amazon ECR 
           env:
             REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-            REGISTRY_ALIAS: my-ecr-registry-alias
-            REPOSITORY: my-ecr-repo
+            REPOSITORY: "movie-picture-backend"
             IMAGE_TAG: ${{ github.sha }}
           run: |
-            docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
-            docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
+            cd starter/backend
+            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
     
   deploy:
     name: 'Using Terraform'
