@@ -68,6 +68,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Set up a Node.js environment with caching.
+      - name: Set up Node.js 
+        uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          cache: 'npm'
+          cache-dependency-path: './starter/frontend/package-lock.json'
+
+      # Install the dependencies.
+      - name: Install dependencies
+        run: cd starter/frontend && npm ci
+
+      # Run the tests.
+      - name: Running test
+        run: cd starter/frontend && npm run test
+
       # Build a Docker image.
       - name: Build image
         run: cd starter/frontend && docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=mp-frontend:latest .
