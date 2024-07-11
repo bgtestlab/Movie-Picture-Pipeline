@@ -86,11 +86,11 @@ jobs:
         REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
         REPOSITORY: "movie-picture-frontend"
         IMAGE_TAG: ${{ github.sha }}
-        run: |
-          cd starter/frontend
-          docker build --build-arg=REACT_APP_MOVIE_API_URL=${{ vars.APP_MOVIE_API_URL }} \
-                      -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
+      run: |
+        cd starter/frontend
+        docker build --build-arg=REACT_APP_MOVIE_API_URL=${{ vars.APP_MOVIE_API_URL }} \
+                    -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
+        docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
     
   deploy:
     runs-on: ubuntu-latest
