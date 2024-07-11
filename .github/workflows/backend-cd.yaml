@@ -1,0 +1,87 @@
+name: cd-backend-workflow
+
+on:
+  # Manual trigger using the workflow_dispatch event
+  workflow_dispatch:
+
+  # Automatic trigger on push events targeting the main branch
+  push:
+    branches:
+      - main
+      
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint: 
+    runs-on: ubuntu-latest
+    steps:
+      # Check out the code from the repository.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up a python environment.
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+          cache: "pipenv"
+
+      # Set up pipenv.
+      - name: Set up Pipenv
+        uses: tiagovrtr/actions-pipenv@v1
+        with:
+          pipenv-version: "v2024.0.1"
+
+      # Install flake8
+      - name: Install flake8
+        run: pip install flake8
+
+      # Install the dependencies.
+      - name: Install dependencies
+        run: cd starter/backend && pipenv install
+
+      # Run the linter.
+      - name: Python Linter
+        run: cd starter/backend && pipenv run lint
+  
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out the code from the repository.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up a python environment.
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+          cache: "pipenv"
+
+      # Set up pipenv.
+      - name: Set up Pipenv
+        uses: tiagovrtr/actions-pipenv@v1
+        with:
+          pipenv-version: "v2024.0.1"
+
+      # Install the dependencies.
+      - name: Install dependencies
+        run: cd starter/backend && pipenv install
+
+      # Run the tests.
+      - name: Running test
+        run: cd starter/backend && pipenv run test
+        
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      # Check out the code from the repository.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Build a Docker image.
+      - name: Build image
+        run: cd starter/backend && docker build --tag=mp-backend:latest .
