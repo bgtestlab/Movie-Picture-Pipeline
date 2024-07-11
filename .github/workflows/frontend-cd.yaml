@@ -81,7 +81,7 @@ jobs:
       with:
         registries: ${{ vars.AWS_ACCOUNT_ID }}
         
-    - name: Build, tag, and push docker image to Amazon ECR Public
+    - name: Build, tag, and push docker image to Amazon ECR
       env:
         REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
         REPOSITORY: "movie-picture-frontend"
@@ -130,5 +130,5 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           cd ./starter/backend/k8s
-          kustomize edit set image backend=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          kustomize edit set image frontend=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           kustomize build | kubectl apply -f -
