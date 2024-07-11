@@ -28,6 +28,12 @@ jobs:
           python-version: "3.12"
           cache: "pipenv"
 
+      # Set up pipenv.
+      - name: Set up Pipenv
+        uses: tiagovrtr/actions-pipenv@v1
+        with:
+          pipenv-version: "v2024.0.1"
+
       # Install the dependencies.
       - name: Install dependencies
         run: cd starter/backend && pipenv install
@@ -49,6 +55,12 @@ jobs:
         with:
           python-version: "3.12"
           cache: "pipenv"
+
+      # Set up pipenv.
+      - name: Set up Pipenv
+        uses: tiagovrtr/actions-pipenv@v1
+        with:
+          pipenv-version: "v2024.0.1"
 
       # Install the dependencies.
       - name: Install dependencies
