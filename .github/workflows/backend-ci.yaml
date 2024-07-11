@@ -34,6 +34,10 @@ jobs:
         with:
           pipenv-version: "v2024.0.1"
 
+      # Install flake8
+      - name: Install flake8
+        run: pip install flake8
+
       # Install the dependencies.
       - name: Install dependencies
         run: cd starter/backend && pipenv install
